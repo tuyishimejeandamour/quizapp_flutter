@@ -1,3 +1,4 @@
+import 'package:first_app/question.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -34,7 +35,7 @@ class MyAppState extends State<MyApp> {
       ),
       body: Column(
         children: [
-          Text(questions.elementAt(questionToAnswer)),
+          Question(questions.elementAt(questionToAnswer)),
           ElevatedButton(
             onPressed: answerQuestion,
             child: Text("is this your month of birth"),
