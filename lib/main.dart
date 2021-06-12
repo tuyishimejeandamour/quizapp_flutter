@@ -1,6 +1,8 @@
 import 'package:first_app/question.dart';
 import 'package:flutter/material.dart';
 
+import 'answer.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -16,10 +18,16 @@ class MyAppState extends State<MyApp> {
   var questionToAnswer = 0;
 
   var questions = [
-    'are you single or married',
-    'do you have children or you don\'t ',
+    {
+      'question': 'which is your favorite food',
+      'answer': ['meat', 'rice', 'matoke', 'maize']
+    },
+    {
+      'question': 'what is your favorite fruit ',
+      'answer': ['manogo', 'orange', 'pinapple', 'banana']
+    },
   ];
-  void answerQuestion() {
+  void _answerQuestion() {
     setState(() {
       questionToAnswer = questionToAnswer + 1;
     });
@@ -35,31 +43,12 @@ class MyAppState extends State<MyApp> {
       ),
       body: Column(
         children: [
-          Question(questions.elementAt(questionToAnswer)),
-          ElevatedButton(
-            onPressed: answerQuestion,
-            child: Text("is this your month of birth"),
+          Question(
+            (questions[questionToAnswer]['question'] as String),
           ),
-          ElevatedButton(
-            onPressed: answerQuestion,
-            child: Text("is this your month of birth"),
-          ),
-          ElevatedButton(
-            onPressed: answerQuestion,
-            child: Text("is this your month of birth"),
-          ),
-          ElevatedButton(
-            onPressed: answerQuestion,
-            child: Text("is this your month of birth"),
-          ),
-          ElevatedButton(
-            onPressed: answerQuestion,
-            child: Text("is this your month of birth"),
-          ),
-          ElevatedButton(
-            onPressed: answerQuestion,
-            child: Text("is this your month of birth"),
-          ),
+          ...(questions[questionToAnswer]['answer'] as List<String>).map((e) {
+            return Answer(_answerQuestion, e);
+          }).toList(),
         ],
       ),
     ));
