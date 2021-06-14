@@ -1,7 +1,6 @@
-import 'package:first_app/question.dart';
+import 'package:first_app/quiz.dart';
+import 'package:first_app/result.dart';
 import 'package:flutter/material.dart';
-
-import 'answer.dart';
 
 void main() {
   runApp(MyApp());
@@ -16,22 +15,41 @@ class MyApp extends StatefulWidget {
 
 class MyAppState extends State<MyApp> {
   var questionToAnswer = 0;
+  var _totalscore = 0;
 
-  var questions = [
+  final _questions = const [
     {
       'question': 'which is your favorite food',
-      'answer': ['meat', 'rice', 'matoke', 'maize']
+      'answer': [
+        {'text': 'meat', 'score': 10},
+        {'text': 'rice', 'score': 6},
+        {'text': 'matoke', 'score': 3},
+        {'text': 'maize', 'score': 2}
+      ]
     },
     {
       'question': 'what is your favorite fruit ',
-      'answer': ['manogo', 'orange', 'pinapple', 'banana']
+      'answer': [
+        {'text': 'manogo', 'score': 10},
+        {'text': 'orange', 'score': 6},
+        {'text': 'pinapple', 'score': 3},
+        {'text': 'banana', 'score': 2}
+      ]
     },
   ];
-  void _answerQuestion() {
+  void _answerQuestion(int score) {
+    _totalscore += score;
     setState(() {
       questionToAnswer = questionToAnswer + 1;
     });
-    print(questionToAnswer);
+    //print(questionToAnswer);
+  }
+
+  void _resetQuiz() {
+    setState(() {
+      questionToAnswer = 0;
+      _totalscore = 0;
+    });
   }
 
   @override
@@ -41,16 +59,13 @@ class MyAppState extends State<MyApp> {
       appBar: AppBar(
         title: Text("First title"),
       ),
-      body: Column(
-        children: [
-          Question(
-            (questions[questionToAnswer]['question'] as String),
-          ),
-          ...(questions[questionToAnswer]['answer'] as List<String>).map((e) {
-            return Answer(_answerQuestion, e);
-          }).toList(),
-        ],
-      ),
+      body: questionToAnswer < _questions.length
+          ? Quiz(
+              answerCallBack: _answerQuestion,
+              questionIndex: questionToAnswer,
+              questions: _questions,
+            )
+          : Result(_resetQuiz, _totalscore),
     ));
   }
 }
